@@ -20,7 +20,7 @@ export default function Navbar() {
                 href="https://buy.stripe.com/test_YOUR_PAYMENT_LINK"
                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
               >
-                Get Started - £30
+                Get Started - &pound;30
               </a>
             </div>
           )}
