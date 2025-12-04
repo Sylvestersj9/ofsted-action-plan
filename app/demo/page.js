@@ -24,7 +24,7 @@ export default function Demo() {
         </Link>
         <h1 className="text-4xl font-bold text-slate-900 mb-4">Demo: Ofsted Action Plan Generator</h1>
         <p className="text-lg text-slate-600">
-          Paste an Ofsted children's home inspection report below to see how the action plan is structured. 
+          Paste an Ofsted children&apos;s home inspection report below to see how the action plan is structured. 
           This is a demonstration showing the format – the actual service will process your report automatically.
         </p>
       </div>

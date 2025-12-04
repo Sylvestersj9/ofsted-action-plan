@@ -12,27 +12,48 @@ export default function Home() {
 
   return (
     <div className="bg-slate-50">
+      {/* Navigation Header */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <div className="w-10 h-10 bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-full flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-lg">Z</span>
+            </div>
+            <div>
+              <h1 className="text-lg font-bold text-slate-900">OFSTED Action Plan</h1>
+              <p className="text-xs text-slate-600">by Ziantra</p>
+            </div>
+          </Link>
+          <a 
+            href="https://buy.stripe.com/cNi00ieL5bO36yh1ZJd3i00"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors text-sm"
+          >
+            Get Started - £30
+          </a>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <section className="bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 py-16 md:py-24">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <div className="inline-flex items-center gap-2 bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-sm font-medium mb-6">
-                <span>Designed for children's homes</span>
+                <span>Designed for children&apos;s homes</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6 leading-tight">
                 Turn Ofsted inspection reports into clear action plans in seconds
               </h1>
               <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Upload your Ofsted children's home inspection report and receive a structured action plan with priorities, deadlines and evidence needed – automatically generated for you.
+                Upload your Ofsted children&apos;s home inspection report and receive a structured action plan with priorities, deadlines and evidence needed – automatically generated for you.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
-                <Link 
-                  href="/demo"
+                <a 
+                  href="https://buy.stripe.com/cNi00ieL5bO36yh1ZJd3i00"
                   className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors"
                 >
-                  Get started – view demo
-                </Link>
+                  Get started – £30
+                </a>
                 <a 
                   href="#how-it-works"
                   className="border-2 border-slate-300 hover:border-slate-400 text-slate-700 px-8 py-4 rounded-lg font-semibold text-center transition-colors"
@@ -104,7 +125,7 @@ export default function Home() {
       <section className="bg-slate-100 border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 py-8 text-center">
           <p className="text-slate-700 font-medium mb-2">
-            Built with input from experienced children's home managers
+            Built with input from experienced children&apos;s home managers
           </p>
           <p className="text-slate-600">
             Helps you turn dense OFSTED text into practical tasks you can assign to your team
@@ -123,7 +144,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold text-slate-900 mb-3">Upload your Ofsted report</h3>
               <p className="text-slate-600">
-                You upload your Ofsted children's home inspection report as a PDF or paste the text directly.
+                You upload your Ofsted children&apos;s home inspection report as a PDF or paste the text directly.
               </p>
             </div>
             <div className="text-center">
@@ -196,7 +217,7 @@ export default function Home() {
                 <div className="space-y-4">
                   <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                     <p className="font-medium text-slate-900 mb-2">Improve quality and consistency of care planning documentation</p>
-                    <p className="text-sm text-slate-600 italic mb-2">"Care plans do not always reflect children's current needs and risks..."</p>
+                    <p className="text-sm text-slate-600 italic mb-2">&quot;Care plans do not always reflect children&apos;s current needs and risks...&quot;</p>
                     <div className="flex flex-wrap gap-4 text-sm">
                       <span className="text-slate-600"><strong>Evidence needed:</strong> Updated care plans, review meeting notes</span>
                       <span className="text-slate-600"><strong>Deadline:</strong> Within 3 months</span>
@@ -231,7 +252,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-4 py-16">
           <h2 className="text-3xl font-bold text-slate-900 text-center mb-6">Who is this for?</h2>
           <p className="text-lg text-slate-600 text-center mb-12 max-w-3xl mx-auto">
-            This tool is specifically designed for professionals working with children's homes Ofsted inspection reports, aligned with the SCCIF framework areas including safeguarding, leadership, health and wellbeing.
+            This tool is specifically designed for professionals working with children&apos;s homes Ofsted inspection reports, aligned with the SCCIF framework areas including safeguarding, leadership, health and wellbeing.
           </p>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-slate-50 rounded-lg p-6 border border-slate-200">
@@ -239,7 +260,7 @@ export default function Home() {
                 <span className="text-2xl">👤</span>
               </div>
               <h3 className="font-semibold text-slate-900 mb-2">Registered managers</h3>
-              <p className="text-sm text-slate-600">Leading children's homes and responsible for OFSTED compliance</p>
+              <p className="text-sm text-slate-600">Leading children&apos;s homes and responsible for OFSTED compliance</p>
             </div>
             <div className="bg-slate-50 rounded-lg p-6 border border-slate-200">
               <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-4">

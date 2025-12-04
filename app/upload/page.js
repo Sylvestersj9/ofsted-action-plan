@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
+import { useSearchParams, useRouter } from 'next/navigation'
 
-export default function Upload() {
+function UploadContent() {
   const [file, setFile] = useState(null)
   const [email, setEmail] = useState('')
   const [homeName, setHomeName] = useState('')
@@ -11,6 +12,59 @@ export default function Upload() {
   const [progress, setProgress] = useState(0)
   const [error, setError] = useState('')
   const [dragActive, setDragActive] = useState(false)
+  const [paymentVerified, setPaymentVerified] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const searchParams = useSearchParams()
+  const router = useRouter()
+
+  useEffect(() => {
+    // Check if user has a valid session_id from Stripe payment
+    const sessionId = searchParams.get('session_id')
+    
+    if (!sessionId) {
+      // No payment session found, redirect to home
+      setError('Payment required. Please complete payment to access this page.')
+      setTimeout(() => {
+        router.push('/')
+      }, 2000)
+      return
+    }
+    
+    // CRITICAL: Verify payment with backend (must check Stripe API)
+    const verifyPayment = async () => {
+      try {
+        const response = await fetch('/api/verify-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId })
+        })
+        
+        const data = await response.json()
+        
+        if (response.ok && data.verified) {
+          // Payment verified - allow access
+          console.log('✓ Payment verified on page load')
+          setPaymentVerified(true)
+          setLoading(false)
+        } else {
+          // Payment verification failed
+          console.error('Payment verification failed:', data)
+          setError('Payment verification failed. Please try completing payment again, or contact support@ziantra.co.uk')
+          setTimeout(() => {
+            router.push('/')
+          }, 3000)
+        }
+      } catch (err) {
+        console.error('Payment verification error:', err)
+        setError('Could not verify payment. Please contact support@ziantra.co.uk')
+        setTimeout(() => {
+          router.push('/')
+        }, 3000)
+      }
+    }
+    
+    verifyPayment()
+  }, [searchParams, router])
 
   const handleDrag = (e) => {
     e.preventDefault()
@@ -66,6 +120,7 @@ export default function Upload() {
     formData.append('file', file)
     formData.append('email', email)
     formData.append('homeName', homeName)
+    formData.append('session_id', searchParams.get('session_id'))
 
     try {
       // Simulate progress
@@ -102,6 +157,31 @@ export default function Upload() {
     }
   }
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <p className="text-slate-600">Verifying payment...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!paymentVerified) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="bg-white rounded-lg shadow-md p-8 max-w-md text-center">
+          <h1 className="text-2xl font-bold text-slate-900 mb-4">Payment Required</h1>
+          <p className="text-slate-600 mb-6">Please complete payment to access the upload form.</p>
+          <Link href="/" className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-semibold inline-block">
+            Return to Home
+          </Link>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-slate-50">
       {/* Header */}
@@ -127,7 +207,7 @@ export default function Upload() {
           </div>
           <h1 className="text-4xl font-bold text-slate-900 mb-4">Upload Your Ofsted Report</h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Upload your children's home inspection report and receive a structured action plan within seconds
+            Upload your children&apos;s home inspection report and receive a structured action plan within seconds
           </p>
         </div>
 
@@ -241,7 +321,18 @@ export default function Upload() {
                     <svg className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                     </svg>
-                    <p className="text-sm text-red-800">{error}</p>
+                    <div className="flex-1">
+                      <p className="text-sm text-red-800 font-medium">{error}</p>
+                      {error.includes('rate') && (
+                        <p className="text-xs text-red-700 mt-1">You&apos;ve uploaded too many times. Please wait a minute before trying again.</p>
+                      )}
+                      {error.includes('Payment') && (
+                        <p className="text-xs text-red-700 mt-1">Please ensure you&apos;ve completed payment before uploading.</p>
+                      )}
+                      {error.includes('PDF') && (
+                        <p className="text-xs text-red-700 mt-1">Make sure you&apos;re uploading a valid PDF file from your OFSTED report.</p>
+                      )}
+                    </div>
                   </div>
                 )}
 
@@ -391,5 +482,20 @@ export default function Upload() {
 
       </div>
     </div>
+  )
+}
+
+export default function Upload() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
+          <p className="text-slate-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <UploadContent />
+    </Suspense>
   )
 }
