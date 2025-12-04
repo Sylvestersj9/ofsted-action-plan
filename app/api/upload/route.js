@@ -14,7 +14,10 @@ export async function POST(request) {
     const file = formData.get('file');
     const email = formData.get('email');
     const homeName = formData.get('homeName');
-    const sessionId = formData.get('session_id');
+    // Accept either `sessionId` (client) or `session_id` (older form) for compatibility
+    const sessionId = formData.get('sessionId') || formData.get('session_id');
+    const isProd = process.env.NODE_ENV === 'production';
+    const DEV_SESSION_IDS = ['test_bypass', 'demo_access'];
     
     console.log('Received:', { 
       filename: file?.name, 
@@ -79,34 +82,49 @@ export async function POST(request) {
       console.log(`First report for ${email} — processing as free report`);
       isFreeReport = true;
     } else {
-      console.log('Verifying payment session with Stripe...');
-      try {
-        const verifyResponse = await fetch(new URL('/api/verify-payment', request.url), {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sessionId })
-        });
-        
-        const verifyData = await verifyResponse.json();
-        
-        // STRICT: If verification fails for ANY reason, reject the upload
-        if (!verifyData.verified || verifyResponse.status !== 200) {
-          console.error(`SECURITY: Payment verification failed for session: ${sessionId}`);
-          console.error(`Verification response: ${JSON.stringify(verifyData)}`);
+      // If the sessionId is one of the dev/demo tokens, only allow it in non-production
+      const isDevSession = sessionId && DEV_SESSION_IDS.includes(sessionId);
+      if (isDevSession && isProd) {
+        console.warn('Attempt to use dev/demo session id in production:', sessionId);
+        return Response.json(
+          { error: 'Invalid payment session.' },
+          { status: 403 }
+        );
+      }
+
+      // If it's a permitted dev session in non-prod, skip Stripe verification
+      if (isDevSession && !isProd) {
+        console.log(`Dev/demo session used (${sessionId}) — skipping Stripe verification in non-production`);
+      } else {
+        console.log('Verifying payment session with Stripe...');
+        try {
+          const verifyResponse = await fetch(new URL('/api/verify-payment', request.url), {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionId })
+          });
+          
+          const verifyData = await verifyResponse.json();
+          
+          // STRICT: If verification fails for ANY reason, reject the upload
+          if (!verifyData.verified || verifyResponse.status !== 200) {
+            console.error(`SECURITY: Payment verification failed for session: ${sessionId}`);
+            console.error(`Verification response: ${JSON.stringify(verifyData)}`);
+            return Response.json(
+              { error: 'Payment verification failed. Please ensure you have completed payment.' }, 
+              { status: 403 }
+            );
+          }
+          
+          console.log(`✓ Payment verified for session ${sessionId}`);
+        } catch (verifyError) {
+          // FAIL SECURE: If verification endpoint is unreachable, deny access
+          console.error('CRITICAL: Payment verification endpoint error:', verifyError);
           return Response.json(
-            { error: 'Payment verification failed. Please ensure you have completed payment.' }, 
-            { status: 403 }
+            { error: 'Payment verification service unavailable. Please try again.' }, 
+            { status: 503 }
           );
         }
-        
-        console.log(`✓ Payment verified for session ${sessionId}`);
-      } catch (verifyError) {
-        // FAIL SECURE: If verification endpoint is unreachable, deny access
-        console.error('CRITICAL: Payment verification endpoint error:', verifyError);
-        return Response.json(
-          { error: 'Payment verification service unavailable. Please try again.' }, 
-          { status: 503 }
-        );
       }
     }
     
