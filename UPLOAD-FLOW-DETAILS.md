@@ -81,7 +81,7 @@ import { validateOFSTEDReport } from '@/lib/validate-pdf';
 ### Lines 93-112: Payment Verification
 - Calls real Stripe API
 - Verifies payment_status = 'paid'
-- Verifies amount = £30 (3000 pence)
+- Verifies amount = £15 (1500 pence)
 - Strict fail-secure design
 - Returns 403 if any check fails
 

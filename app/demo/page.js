@@ -162,7 +162,7 @@ Safeguarding: The arrangements for safeguarding children are not effective. Staf
                     href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02"
                     className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors"
                   >
-                    Get Started - £30
+                    Get Started - £15
                   </a>
                   <p className="text-sm text-slate-500 mt-4">Delivered to your email in seconds</p>
                 </div>
@@ -238,7 +238,7 @@ Safeguarding: The arrangements for safeguarding children are not effective. Staf
           href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02"
           className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
         >
-          Get Started - £30
+          Get Started - £15
         </a>
       </div>
     </div>

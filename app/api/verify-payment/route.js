@@ -4,7 +4,7 @@
  * This endpoint validates that:
  * 1. session_id is a real Stripe checkout session
  * 2. Payment status is 'paid' (not 'unpaid' or 'no_payment_required')
- * 3. Payment amount is exactly £30 (3000 pence)
+ * 3. Payment amount is exactly £15 (1500 pence)
  * 4. Session was created recently (within 24 hours)
  * 
  * Without this verification, users could bypass payment by:
@@ -16,7 +16,7 @@
 import Stripe from 'stripe';
 
 const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY;
-const PRICE_PENCE = 3000; // £30.00 in pence
+const PRICE_PENCE = 1500; // £15.00 in pence
 const SESSION_MAX_AGE_HOURS = 24;
 
 // Lazy initialize Stripe client (only when needed, not at build time)
@@ -57,7 +57,7 @@ async function verifyStripeSession(sessionId) {
       return { verified: false, reason: `Payment status: ${session.payment_status}` };
     }
 
-    // 4. Check payment amount is correct (£30 = 3000 pence)
+    // 4. Check payment amount is correct (£15 = 1500 pence)
     if (session.amount_total !== PRICE_PENCE) {
       console.error(`Wrong amount for session ${sessionId}: ${session.amount_total} pence (expected ${PRICE_PENCE})`);
       return { verified: false, reason: 'Payment amount incorrect' };

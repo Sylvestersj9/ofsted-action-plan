@@ -28,7 +28,7 @@ cat .gitignore | grep .env.local
 3. Navigate to "Payment Links"
 4. Create a new Payment Link:
    - Product: "OFSTED Action Plan Report"
-   - Price: £30.00 GBP
+   - Price: £15.00 GBP
    - One-time payment
    - Success URL: `https://your-domain.vercel.app/success?session_id={CHECKOUT_SESSION_ID}`
 
@@ -131,7 +131,7 @@ After deployment, update your Stripe Payment Link:
 
 ### 6.1 Test Payment Flow
 1. Visit your live site
-2. Click "Get Started - £30"
+2. Click "Get Started - £15"
 3. Complete payment with test card:
    - Card: 4242 4242 4242 4242
    - Expiry: Any future date
@@ -222,11 +222,11 @@ Before going live, verify:
 - **Domain**: ~£10/year (if new)
 
 ### Per Transaction:
-- **Revenue**: £30.00
-- **Stripe Fee**: £0.65 (1.5% + 20p)
+- **Revenue**: £15.00
+- **Stripe Fee**: £0.43 (1.5% + 20p)
 - **AI Cost**: £0.00 (free)
 - **Email Cost**: £0.00 (free tier)
-- **Net Profit**: £29.35 per report
+- **Net Profit**: £14.57 per report
 
 ---
 

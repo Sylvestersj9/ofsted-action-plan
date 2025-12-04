@@ -28,7 +28,7 @@ export default function Home() {
             href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02"
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors text-sm"
           >
-            Get Started - £30
+            Get Started - £15
           </a>
         </div>
       </header>
@@ -52,7 +52,7 @@ export default function Home() {
                   href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02"
                   className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors"
                 >
-                  Get started – £30
+                  Get started – £15
                 </a>
                 <a 
                   href="#how-it-works"
@@ -412,7 +412,7 @@ export default function Home() {
               },
               {
                 q: "How much does it cost?",
-                a: "We are currently testing beta pricing with early users. The planned standard price is around £30 per report. During beta, pricing may be lower as we refine the service based on feedback."
+                a: "We are currently testing beta pricing with early users. The planned standard price is around £15 per report. During beta, pricing may be lower as we refine the service based on feedback."
               },
               {
                 q: "How long does it take?",

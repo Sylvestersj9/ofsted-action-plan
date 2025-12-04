@@ -25,7 +25,7 @@ npm run dev
 - Visit: http://localhost:3000
 - Check all sections render correctly
 - Test mobile responsiveness (resize browser to 375px)
-- Click "Get Started - £30" button (currently placeholder)
+ - Click "Get Started - £15" button (currently placeholder)
 
 ### Success Page
 - Visit: http://localhost:3000/success?session_id=test_123
@@ -38,7 +38,7 @@ npm run dev
 
 ### 1. Stripe Integration
 - Create Stripe account
-- Generate Payment Link for £30
+- Generate Payment Link for £15
 - Replace `#stripe-payment-link` in `app/page.js` with real Stripe URL
 - Set success URL to: `https://yourdomain.com/success?session_id={CHECKOUT_SESSION_ID}`
 

@@ -17,7 +17,7 @@ export default function Home() {
             href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02"
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors text-sm"
           >
-            Get Started - £30
+            Get Started - £15
           </a>
         </div>
       </header>
@@ -36,7 +36,7 @@ export default function Home() {
               href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02" 
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors text-lg"
             >
-              Get Started - £30
+              Get Started - £15
             </a>
             <a 
               href="#how-it-works" 
@@ -57,7 +57,7 @@ export default function Home() {
             <div className="text-gray-700">Average Delivery Time</div>
           </div>
           <div className="bg-green-50 rounded-lg p-6 text-center border border-green-100">
-            <div className="text-4xl font-bold text-green-600 mb-2">£30</div>
+            <div className="text-4xl font-bold text-green-600 mb-2">£15</div>
             <div className="text-gray-700">One-Time Payment</div>
           </div>
           <div className="bg-purple-50 rounded-lg p-6 text-center border border-purple-100">
@@ -119,7 +119,7 @@ export default function Home() {
               <div className="w-16 h-16 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-2xl mx-auto mb-4">
                 1
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Pay £30</h3>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Pay £15</h3>
               <p className="text-gray-600">Secure one-time payment via Stripe. No subscription, no hidden fees.</p>
             </div>
 
@@ -188,7 +188,7 @@ export default function Home() {
             </div>
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Can I use this for multiple reports?</h3>
-              <p className="text-gray-600">Yes! Each report requires a separate £30 payment. There's no limit to how many reports you can process.</p>
+              <p className="text-gray-600">Yes! Each report requires a separate £15 payment. There's no limit to how many reports you can process.</p>
             </div>
             <div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">How long does processing take?</h3>
@@ -205,7 +205,7 @@ export default function Home() {
             href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02" 
             className="inline-block bg-white text-blue-600 font-semibold px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors text-lg"
           >
-            Get Started - £30
+            Get Started - £15
           </a>
         </section>
 

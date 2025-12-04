@@ -22,7 +22,7 @@ This session transformed your OFSTED Action Plan app from a basic landing page t
 #### 2. 💰 Freemium Model (IMPLEMENTED)
 - ✅ **First Report Free** — No payment required for first upload per email
 - ✅ **Database Tracking** — `is_free` flag records which reports are free
-- ✅ **Subsequent Reports £30** — Stripe payment enforced
+- ✅ **Subsequent Reports £15** — Stripe payment enforced
 - ✅ **Payment Recording** — All transactions logged to database
 
 #### 3. 🗄️ Database Layer (PRODUCTION-READY)

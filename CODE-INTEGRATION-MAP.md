@@ -89,7 +89,7 @@ const session = await stripe.checkout.sessions.retrieve(sessionId);
 if (session.payment_status !== 'paid') → FAIL
 
 // Verify amount paid
-if (session.amount_total !== 3000) → FAIL  // £30
+if (session.amount_total !== 1500) → FAIL  // £15
 
 // Verify session not too old
 if (now - session.created > 86400000) → FAIL  // 24 hours
@@ -188,7 +188,7 @@ Rate Limiting:
 {
   sessionId: "cs_test_xxx",
   email: "user@example.com",
-  amount: 3000,
+    amount: 1500,
   currency: "gbp",
   status: "paid",
   used: false,

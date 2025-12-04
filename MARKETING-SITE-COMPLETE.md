@@ -141,7 +141,7 @@ The site now clearly communicates:
 - **How it works:** Simple 3-step process
 - **Why use it:** Saves time, reduces risk, clarifies priorities
 - **Data protection:** Comprehensive GDPR and security information
-- **Pricing:** £30 per report (beta pricing available)
+- **Pricing:** £15 per report (beta pricing available)
 
 ## Professional Touches
 

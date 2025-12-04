@@ -8,7 +8,7 @@ A Next.js application that converts OFSTED inspection reports into actionable ta
 
 ### ✅ Implemented
 - ✅ **Security Hardened:** Server-side Stripe verification, PDF validation, webhook signing, session reuse prevention
-- ✅ **Freemium Model:** First report free, subsequent reports £30 (Stripe payment required)
+- ✅ **Freemium Model:** First report free, subsequent reports £15 (Stripe payment required)
 - ✅ **Database:** Postgres with migrations (in-memory fallback for dev)
 - ✅ **Rate Limiting:** Vercel KV in production, Map fallback in dev
 - ✅ **Deployment Ready:** Build passes, dev server runs, all routes working
@@ -35,7 +35,7 @@ A Next.js application that converts OFSTED inspection reports into actionable ta
 ## Features
 
 - ✅ Clean, professional landing page
-- ✅ Stripe Checkout integration (£30 per report, first free)
+- ✅ Stripe Checkout integration (£15 per report, first free)
 - ✅ Post-payment secure upload form
 - ✅ Server-side Stripe payment verification
 - ✅ PDF content validation (prevents AI credit waste)
@@ -149,7 +149,7 @@ ofsted-action-plan/
 ## Freemium Model
 
 - **First Report:** FREE
-- **Subsequent Reports:** £30 (Stripe payment required)
+- **Subsequent Reports:** £15 (Stripe payment required)
 - **Payment Tracking:** Recorded in Postgres (`payments` table)
 - **Upload Tracking:** `uploads` table with `is_free` flag
 
@@ -207,7 +207,7 @@ Verifies Stripe Checkout session before accepting paid uploads.
   "verified": true,
   "status": "complete",
   "email": "user@example.com",
-  "amount": 3000
+  "amount": 1500
 }
 ```
 

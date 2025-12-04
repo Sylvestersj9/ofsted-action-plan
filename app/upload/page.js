@@ -197,7 +197,7 @@ function UploadContent() {
             href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02"
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold text-sm"
           >
-            Get Started - £30
+            Get Started - £15
           </a>
         </div>
       </header>

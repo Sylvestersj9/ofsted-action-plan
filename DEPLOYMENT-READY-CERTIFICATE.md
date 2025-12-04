@@ -47,7 +47,7 @@ STATUS: 🟢 PASSED — Production-grade code quality
 ✅ FEATURE COMPLETENESS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-✓ Freemium model: First report FREE, subsequent £30
+✓ Freemium model: First report FREE, subsequent £15
 ✓ Payment verification: Server-side only
 ✓ Payment recording: Tracked in database
 ✓ Upload tracking: is_free flag on all uploads
@@ -175,7 +175,7 @@ After deployment, you will have:
 
 ✅ Production app running at https://<your-project>.vercel.app
 ✅ First report FREE (no payment required)
-✅ Subsequent reports £30 (Stripe payment enforced)
+✅ Subsequent reports £15 (Stripe payment enforced)
 ✅ All payments verified server-side
 ✅ All uploads tracked in Postgres
 ✅ Rate limiting active (Vercel KV)

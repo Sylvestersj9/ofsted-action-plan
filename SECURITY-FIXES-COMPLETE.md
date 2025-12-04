@@ -16,7 +16,7 @@ This document confirms that 9 of the 13 critical production vulnerabilities have
 **Solution Implemented:**
 - ✅ Real Stripe API verification in `/app/api/verify-payment/route.js`
 - ✅ Validates with `stripe.checkout.sessions.retrieve(sessionId)`
-- ✅ Checks: `payment_status === 'paid'`, `amount_total === 3000` (£30), session age < 24 hours
+- ✅ Checks: `payment_status === 'paid'`, `amount_total === 1500` (£15), session age < 24 hours
 - ✅ Strict fail-secure design: ANY verification failure = 403 Forbidden
 - ✅ Called from `/app/upload/page.js` on page load with async fetch
 
@@ -25,7 +25,7 @@ This document confirms that 9 of the 13 critical production vulnerabilities have
 ---
 
 ### 2. **CRITICAL: Session Reuse Attack** ⚠️ FIXED
-**Problem:** One £30 payment = unlimited uploads (no tracking of payment usage)
+**Problem:** One £15 payment = unlimited uploads (no tracking of payment usage)
 
 **Solution Implemented:**
 - ✅ Database layer `/lib/db.js` created with payment tracking
