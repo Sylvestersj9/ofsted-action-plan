@@ -159,7 +159,7 @@ Safeguarding: The arrangements for safeguarding children are not effective. Staf
                     This demo shows the structure. Get your complete action plan with all items, priorities, and evidence requirements.
                   </p>
                   <a 
-                    href="https://buy.stripe.com/cNi00ieL5bO36yh1ZJd3i00"
+                    href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02"
                     className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg font-semibold transition-colors"
                   >
                     Get Started - £30
@@ -235,7 +235,7 @@ Safeguarding: The arrangements for safeguarding children are not effective. Staf
           Get your actual Ofsted report processed and receive a complete action plan by email in seconds.
         </p>
         <a 
-          href="https://buy.stripe.com/cNi00ieL5bO36yh1ZJd3i00"
+          href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02"
           className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
         >
           Get Started - £30

@@ -257,7 +257,7 @@ STRIPE_WEBHOOK_SECRET=whsec_...   # Stripe webhook signing secret
 ### Stripe Configuration
 ```
 Payment Link (for /page.js):
-https://buy.stripe.com/cNi00ieL5bO36yh1ZJd3i00
+https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02
 
 Webhook URL (for Vercel):
 https://your-domain.com/api/webhooks/stripe

@@ -14,7 +14,7 @@ export default function Home() {
             </div>
           </div>
           <a 
-            href="https://buy.stripe.com/cNi00ieL5bO36yh1ZJd3i00"
+            href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02"
             className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-colors text-sm"
           >
             Get Started - £30
@@ -33,7 +33,7 @@ export default function Home() {
           </p>
           <div className="flex items-center justify-center gap-4 mb-8">
             <a 
-              href="https://buy.stripe.com/cNi00ieL5bO36yh1ZJd3i00" 
+              href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02" 
               className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-4 rounded-lg transition-colors text-lg"
             >
               Get Started - £30
@@ -202,7 +202,7 @@ export default function Home() {
           <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
           <p className="text-xl mb-8 opacity-90">Transform your OFSTED report into an actionable plan in just 2 hours.</p>
           <a 
-            href="https://buy.stripe.com/cNi00ieL5bO36yh1ZJd3i00" 
+            href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02" 
             className="inline-block bg-white text-blue-600 font-semibold px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors text-lg"
           >
             Get Started - £30
@@ -265,7 +265,7 @@ export default function Home() {
               <h3 className="font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2 text-sm">
                 <li><a href="#how-it-works" className="text-gray-400 hover:text-white transition-colors">How It Works</a></li>
-                <li><a href="https://buy.stripe.com/cNi00ieL5bO36yh1ZJd3i00" className="text-gray-400 hover:text-white transition-colors">Get Started</a></li>
+                <li><a href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02" className="text-gray-400 hover:text-white transition-colors">Get Started</a></li>
               </ul>
             </div>
             <div>

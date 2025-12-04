@@ -25,7 +25,7 @@ export default function Home() {
             </div>
           </Link>
           <a 
-            href="https://buy.stripe.com/cNi00ieL5bO36yh1ZJd3i00"
+            href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02"
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-semibold transition-colors text-sm"
           >
             Get Started - £30
@@ -49,7 +49,7 @@ export default function Home() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <a 
-                  href="https://buy.stripe.com/cNi00ieL5bO36yh1ZJd3i00"
+                  href="https://buy.stripe.com/aFa14m1Yj3hx4q90VFd3i02"
                   className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg font-semibold text-center transition-colors"
                 >
                   Get started – £30
