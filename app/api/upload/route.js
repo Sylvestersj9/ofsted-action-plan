@@ -1,32 +1,9 @@
 import { extractTextFromPDF } from '@/lib/extract-pdf';
 import { analyzeReport } from '@/lib/analyze-report';
 import { sendActionPlan } from '@/lib/send-email';
-import { recordPayment, markPaymentAsUsed, validatePaymentUsage, recordUpload, updateUploadStatus } from '@/lib/db';
+import { recordPayment, markPaymentAsUsed, validatePaymentUsage, recordUpload, updateUploadStatus, countUploadsByEmail } from '@/lib/db';
 import { validateOFSTEDReport } from '@/lib/validate-pdf';
-
-// Simple in-memory rate limiting (replace with Redis in production)
-const uploadAttempts = new Map();
-
-function checkRateLimit(identifier) {
-  const now = Date.now();
-  const key = identifier;
-  
-  if (!uploadAttempts.has(key)) {
-    uploadAttempts.set(key, []);
-  }
-  
-  const attempts = uploadAttempts.get(key);
-  // Keep only attempts from last 60 seconds
-  const recentAttempts = attempts.filter(time => now - time < 60000);
-  
-  if (recentAttempts.length >= 5) {
-    return false; // Rate limited: 5 uploads per minute
-  }
-  
-  recentAttempts.push(now);
-  uploadAttempts.set(key, recentAttempts);
-  return true;
-}
+import { checkRateLimit } from '@/lib/rate-limit';
 
 export async function POST(request) {
   console.log('=== Upload API called ===');
@@ -46,18 +23,31 @@ export async function POST(request) {
       sessionId 
     });
     
-    // 2. Check rate limit
-    if (!checkRateLimit(email)) {
+    // 2. Check rate limit (now using persistent Vercel KV in prod, Map fallback in dev)
+    const rateLimitOk = await checkRateLimit(email);
+    if (!rateLimitOk) {
       return Response.json(
         { error: 'Too many upload attempts. Please wait a minute before trying again.' }, 
         { status: 429 }
       );
     }
     
-    // 3. Validation
-    if (!file || !email || !sessionId || !homeName) {
+    // 3. Validation (note: sessionId may be omitted for first-time free users)
+    if (!file || !email || !homeName) {
       return Response.json(
         { error: 'Missing required fields' }, 
+        { status: 400 }
+      );
+    }
+
+    // Determine if this is the user's first report (eligible for free report)
+    const uploadsCount = await countUploadsByEmail(email);
+    const isFirstReport = uploadsCount === 0;
+
+    // If this is NOT the first report, sessionId is required
+    if (!isFirstReport && !sessionId) {
+      return Response.json(
+        { error: 'Missing payment session. Please complete payment.' },
         { status: 400 }
       );
     }
@@ -83,58 +73,68 @@ export async function POST(request) {
       );
     }
     
-    // 4. Verify payment session (CRITICAL SECURITY CHECK)
-    console.log('Verifying payment session with Stripe...');
-    try {
-      const verifyResponse = await fetch(new URL('/api/verify-payment', request.url), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId })
-      });
-      
-      const verifyData = await verifyResponse.json();
-      
-      // STRICT: If verification fails for ANY reason, reject the upload
-      if (!verifyData.verified || verifyResponse.status !== 200) {
-        console.error(`SECURITY: Payment verification failed for session: ${sessionId}`);
-        console.error(`Verification response: ${JSON.stringify(verifyData)}`);
+    // 4. Verify payment session (unless this is the user's first free report)
+    let isFreeReport = false;
+    if (isFirstReport) {
+      console.log(`First report for ${email} — processing as free report`);
+      isFreeReport = true;
+    } else {
+      console.log('Verifying payment session with Stripe...');
+      try {
+        const verifyResponse = await fetch(new URL('/api/verify-payment', request.url), {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ sessionId })
+        });
+        
+        const verifyData = await verifyResponse.json();
+        
+        // STRICT: If verification fails for ANY reason, reject the upload
+        if (!verifyData.verified || verifyResponse.status !== 200) {
+          console.error(`SECURITY: Payment verification failed for session: ${sessionId}`);
+          console.error(`Verification response: ${JSON.stringify(verifyData)}`);
+          return Response.json(
+            { error: 'Payment verification failed. Please ensure you have completed payment.' }, 
+            { status: 403 }
+          );
+        }
+        
+        console.log(`✓ Payment verified for session ${sessionId}`);
+      } catch (verifyError) {
+        // FAIL SECURE: If verification endpoint is unreachable, deny access
+        console.error('CRITICAL: Payment verification endpoint error:', verifyError);
         return Response.json(
-          { error: 'Payment verification failed. Please ensure you have completed payment.' }, 
-          { status: 403 }
+          { error: 'Payment verification service unavailable. Please try again.' }, 
+          { status: 503 }
         );
       }
-      
-      console.log(`✓ Payment verified for session ${sessionId}`);
-    } catch (verifyError) {
-      // FAIL SECURE: If verification endpoint is unreachable, deny access
-      console.error('CRITICAL: Payment verification endpoint error:', verifyError);
-      return Response.json(
-        { error: 'Payment verification service unavailable. Please try again.' }, 
-        { status: 503 }
-      );
     }
     
     // 4.5. Record payment to database (for fraud prevention and auditing)
-    console.log('Recording payment to database...');
-    try {
-      await recordPayment(sessionId, email);
-      console.log(`✓ Payment recorded: ${sessionId}`);
-    } catch (dbError) {
-      console.error('Warning: Failed to record payment:', dbError);
-      // Don't fail the request, but log it - database recording is best-effort
+    if (!isFreeReport) {
+      console.log('Recording payment to database...');
+      try {
+        await recordPayment(sessionId, email);
+        console.log(`✓ Payment recorded: ${sessionId}`);
+      } catch (dbError) {
+        console.error('Warning: Failed to record payment:', dbError);
+        // Don't fail the request, but log it - database recording is best-effort
+      }
     }
     
     // 4.6. Validate payment hasn't been used (prevent session reuse fraud)
-    console.log('Validating payment usage...');
-    const paymentUsageValidation = await validatePaymentUsage(sessionId, email);
-    if (!paymentUsageValidation.valid) {
-      console.warn('Payment usage validation failed:', paymentUsageValidation.reason);
-      return Response.json(
-        { error: paymentUsageValidation.reason }, 
-        { status: 403 }
-      );
+    if (!isFreeReport) {
+      console.log('Validating payment usage...');
+      const paymentUsageValidation = await validatePaymentUsage(sessionId, email);
+      if (!paymentUsageValidation.valid) {
+        console.warn('Payment usage validation failed:', paymentUsageValidation.reason);
+        return Response.json(
+          { error: paymentUsageValidation.reason }, 
+          { status: 403 }
+        );
+      }
+      console.log(`✓ Payment session ${sessionId} cleared for use`);
     }
-    console.log(`✓ Payment session ${sessionId} cleared for use`);
     
     // 5. Convert file to buffer
     const bytes = await file.arrayBuffer();
@@ -190,9 +190,13 @@ export async function POST(request) {
     
     console.log(`Analysis complete: ${analysis.data.action_items?.length || 0} action items`);
     
-    // 9. Mark payment as used (prevent reuse)
-    await markPaymentAsUsed(sessionId);
-    console.log(`Payment ${sessionId} marked as used`);
+    // 9. Mark payment as used (prevent reuse) — only for paid reports
+    if (!isFreeReport) {
+      await markPaymentAsUsed(sessionId);
+      console.log(`Payment ${sessionId} marked as used`);
+    } else {
+      console.log('Free report processed — no payment to mark as used');
+    }
     
     // 10. Send email
     console.log('Sending email...');
@@ -210,9 +214,9 @@ export async function POST(request) {
       );
     }
     
-    // Record upload to database for audit trail
-    await recordUpload(sessionId, email, file.name, file.size);
-    console.log(`Upload recorded: ${sessionId} from ${email}`);
+    // Record upload to database for audit trail (mark as free if applicable)
+    await recordUpload(isFreeReport ? null : sessionId, email, file.name, file.size, isFreeReport);
+    console.log(`Upload recorded: ${sessionId || 'free'} from ${email}`);
     
     console.log('=== Processing complete ===');
     
